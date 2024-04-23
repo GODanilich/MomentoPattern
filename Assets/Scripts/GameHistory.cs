@@ -1,13 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class GameHistory
 {
-    public List<PlayerMomento> PlayerMomentos;
+    public List<PlayerMemento> PlayerMementos;
 
     public GameHistory()
     {
-        PlayerMomentos = new List<PlayerMomento>();
+        PlayerMementos = new List<PlayerMemento>();
     }
 }

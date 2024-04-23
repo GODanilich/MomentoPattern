@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
@@ -8,16 +6,14 @@ public class PlayerHandler : MonoBehaviour
 
     private Vector3 movementVector = Vector3.zero;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
+        Move();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Move()
     {
-        if (Input.GetKey(KeyCode.W)) 
+        if (Input.GetKey(KeyCode.W))
         {
             movementVector.y += 1;
         }
@@ -33,21 +29,37 @@ public class PlayerHandler : MonoBehaviour
         {
             movementVector.x += 1;
         }
-        
+
         gameObject.transform.position += moveSpeed * Time.deltaTime * movementVector.normalized;
 
         movementVector = Vector3.zero;
     }
-
-    public PlayerMomento SaveState()
+    public PlayerMemento SaveState()
     {
         Debug.Log("Saving game progress");
-        return new PlayerMomento(gameObject.transform.position.x, gameObject.transform.position.y);
+        return new PlayerMemento(gameObject.transform.position);
     }
 
-    public void RestoreState(PlayerMomento playerMomento)
+    public void RestoreState(PlayerMemento playerMomento)
     {
-        gameObject.transform.position = new Vector3(playerMomento.PlayerPositionX, playerMomento.PlayerPositionY);
+        gameObject.transform.position = playerMomento.PlayerPosition;
         Debug.Log("Loaded previous game data");
     }
+
+    #region WithoutPattern
+
+    public Vector3 GetXYCoordinate()
+    {
+        Debug.Log("Getting XY vector from player");
+        return gameObject.transform.position;
+    }
+
+
+    public void SetXYCoordinate(Vector3 xy)
+    {
+        Debug.Log("Setting new XY vector for player");
+        gameObject.transform.position = xy;
+    }
+
+    #endregion
 }

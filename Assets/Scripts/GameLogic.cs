@@ -1,27 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
+    [SerializeField] private bool withPattern = true;
     [SerializeField] private PlayerHandler player;
-    GameHistory gameHistory;
-    // Start is called before the first frame update
-    void Start()
+    private GameHistory gameHistory;
+    private bool isSaved = false;
+    private int pressedLCount = 0;
+
+    //for realization without pattern
+    private Vector3 xyCoordinates;
+    [Range(-9,9)][SerializeField] private float customX;
+    [Range(-4,4)][SerializeField] private float customY;
+
+    private void Start()
     {
         gameHistory = new GameHistory();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if(Input.GetKey(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.P))
         {
-            gameHistory.PlayerMomentos.Add(player.SaveState());
+            if (withPattern)
+            {
+                isSaved = true;
+                pressedLCount = 0;
+                gameHistory.PlayerMementos.Add(player.SaveState());
+            }
+            else xyCoordinates = player.GetXYCoordinate(); //WithoutPattern
+
         }
-        if (Input.GetKey(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            player.RestoreState(gameHistory.PlayerMomentos[gameHistory.PlayerMomentos.Count - 1]);
+            if (withPattern && isSaved)
+            {
+                player.RestoreState(gameHistory.PlayerMementos[gameHistory.PlayerMementos.Count - 1 - pressedLCount]);
+                if (gameHistory.PlayerMementos.Count - 1 - pressedLCount - 1 < 0)
+                {
+                    Debug.Log("On first save");
+                }
+                else ++pressedLCount;
+
+            }
+
+            else player.SetXYCoordinate(xyCoordinates); //WithoutPattern
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.Log($"Changing XY vector to X = {customX} Y = {customY}");
+            xyCoordinates = new(customX, customY);
         }
     }
 }

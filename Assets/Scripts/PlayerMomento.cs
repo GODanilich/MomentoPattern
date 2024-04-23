@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMomento
+public class PlayerMemento
 {
-    public float PlayerPositionX { get; private set; }
-    public float PlayerPositionY { get; private set; }
+    public Vector3 PlayerPosition { get; }
 
-    public PlayerMomento(float positionX, float positionY)
+    public PlayerMemento(Vector3 playerPosition)
     {
-        PlayerPositionX = positionX;
-        PlayerPositionY = positionY;
+        PlayerPosition = playerPosition;
     }
 }
